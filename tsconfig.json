@@ -2,7 +2,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "target": "esnext",
-    "module": "CommonJS",
+    "module": "ES2022",
     "moduleResolution": "node",
     "allowJs": true,
     "noEmit": true,
@@ -11,6 +11,7 @@
     "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "types": ["vite/client"],
     "baseUrl": "./",
     "incremental": true,
     "tsBuildInfoFile": "tmp/cache/tsconfig.tsbuildinfo",
@@ -21,6 +22,7 @@
     }
   },
   "include": [
+    "vite.config.ts",
     "app/javascript/mastodon",
     "app/javascript/entrypoints",
     "app/javascript/types"
