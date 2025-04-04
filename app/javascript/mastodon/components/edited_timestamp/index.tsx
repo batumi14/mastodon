@@ -108,7 +108,7 @@ export const EditedTimestamp: React.FC<{
   );
 
   return (
-    <Dropdown
+    <Dropdown<HistoryItem>
       items={items}
       loading={loading}
       renderItem={renderItem}

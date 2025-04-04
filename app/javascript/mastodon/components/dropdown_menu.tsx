@@ -27,7 +27,6 @@ import { openModal, closeModal } from 'mastodon/actions/modal';
 import { CircularProgress } from 'mastodon/components/circular_progress';
 import { isUserTouching } from 'mastodon/is_mobile';
 import type {
-  DropdownMenu as DropdownMenuType,
   MenuItem,
   ActionMenuItem,
   ExternalLinkMenuItem,
@@ -55,8 +54,8 @@ const isExternalLinkItem = (item: MenuItem): item is ExternalLinkMenuItem => {
   return !!(item as ExternalLinkMenuItem).href;
 };
 
-type RenderItemFn = (
-  arg0: MenuItem,
+type RenderItemFn<Item = MenuItem> = (
+  arg0: Item,
   arg1: number,
   arg2: {
     onClick: (e: React.MouseEvent) => void;
@@ -64,18 +63,18 @@ type RenderItemFn = (
   },
 ) => React.ReactNode;
 
-type RenderHeaderFn = (arg0: DropdownMenuType) => React.ReactNode;
-
-const DropdownMenu: React.FC<{
-  items?: DropdownMenuType;
+interface DropdownMenuProps<Item = MenuItem> {
+  items: Item[];
   loading?: boolean;
   scrollable?: boolean;
   onClose: () => void;
   openedViaKeyboard: boolean;
-  renderItem?: RenderItemFn;
-  renderHeader?: RenderHeaderFn;
+  renderItem?: RenderItemFn<Item>;
+  renderHeader?: (arg0: Item[]) => React.ReactNode;
   onItemClick: (e: React.MouseEvent | React.KeyboardEvent) => void;
-}> = ({
+}
+
+const DropdownMenu = <Item = MenuItem,>({
   items,
   loading,
   scrollable,
@@ -84,7 +83,7 @@ const DropdownMenu: React.FC<{
   renderItem,
   renderHeader,
   onItemClick,
-}) => {
+}: DropdownMenuProps<Item>) => {
   const nodeRef = useRef<HTMLDivElement>(null);
   const focusedItemRef = useRef<HTMLElement | null>(null);
 
@@ -279,27 +278,27 @@ const DropdownMenu: React.FC<{
   );
 };
 
-interface DropdownProps {
+interface DropdownProps<Item = MenuItem> {
   children?: React.ReactElement;
   icon?: string;
   iconComponent?: IconProp;
-  items?: DropdownMenuType;
+  items: Item[];
   loading?: boolean;
   title?: string;
   disabled?: boolean;
   scrollable?: boolean;
   scrollKey?: string;
   status?: ImmutableMap<string, unknown>;
-  renderItem?: RenderItemFn;
-  renderHeader?: RenderHeaderFn;
+  renderItem?: RenderItemFn<Item>;
+  renderHeader?: (arg0: Item[]) => React.ReactNode;
   onOpen?: () => void;
-  onItemClick?: (arg0: MenuItem, arg1: number) => void;
+  onItemClick?: (arg0: Item, arg1: number) => void;
 }
 
 const offset = [5, 5] as OffsetValue;
 const popperConfig = { strategy: 'fixed' } as UsePopperOptions;
 
-export const Dropdown: React.FC<DropdownProps> = ({
+export const Dropdown = <Item = MenuItem,>({
   children,
   icon,
   iconComponent,
@@ -314,7 +313,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   onOpen,
   onItemClick,
   scrollKey,
-}) => {
+}: DropdownProps<Item>) => {
   const dispatch = useAppDispatch();
   const openDropdownId = useAppSelector((state) => state.dropdownMenu.openId);
   const openedViaKeyboard = useAppSelector(
@@ -424,7 +423,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   const handleItemClick = useCallback(
     (e: React.MouseEvent | React.KeyboardEvent) => {
       const i = Number(e.currentTarget.getAttribute('data-index'));
-      const item = items?.[i];
+      const item = items[i];
 
       handleClose();
 
@@ -494,7 +493,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 {...arrowProps}
               />
 
-              <DropdownMenu
+              <DropdownMenu<Item>
                 items={items}
                 loading={loading}
                 scrollable={scrollable}
