@@ -37,12 +37,12 @@ import {
   FollowingCounter,
   StatusesCounter,
 } from 'mastodon/components/counters';
+import { Dropdown } from 'mastodon/components/dropdown_menu';
 import { FormattedDateWrapper } from 'mastodon/components/formatted_date';
 import { Icon } from 'mastodon/components/icon';
 import { IconButton } from 'mastodon/components/icon_button';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import { ShortNumber } from 'mastodon/components/short_number';
-import DropdownMenuContainer from 'mastodon/containers/dropdown_menu_container';
 import { DomainPill } from 'mastodon/features/account/components/domain_pill';
 import AccountNoteContainer from 'mastodon/features/account/containers/account_note_container';
 import FollowRequestNoteContainer from 'mastodon/features/account/containers/follow_request_note_container';
@@ -879,13 +879,11 @@ export const AccountHeader: React.FC<{
             <div className='account__header__tabs__buttons'>
               {!hidden && bellBtn}
               {!hidden && shareBtn}
-              <DropdownMenuContainer
+              <Dropdown
                 disabled={menu.length === 0}
                 items={menu}
                 icon='ellipsis-v'
                 iconComponent={MoreHorizIcon}
-                size={24}
-                direction='right'
               />
               {!hidden && actionBtn}
             </div>

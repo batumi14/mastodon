@@ -3,16 +3,18 @@ interface BaseMenuItem {
   dangerous?: boolean;
 }
 
-interface ActionMenuItem extends BaseMenuItem {
+export interface ActionMenuItem extends BaseMenuItem {
   action: () => void;
 }
 
-interface LinkMenuItem extends BaseMenuItem {
+export interface LinkMenuItem extends BaseMenuItem {
   to: string;
 }
 
-interface ExternalLinkMenuItem extends BaseMenuItem {
+export interface ExternalLinkMenuItem extends BaseMenuItem {
   href: string;
+  target?: string;
+  method?: 'post' | 'put' | 'delete';
 }
 
 export type MenuItem =
